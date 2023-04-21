@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+
+  front:
+    command: npm run prod
+    build:
+      context: ../.
+      dockerfile: .docker/front/Dockerfile
+    ports:
+      - '3000'
+    env_file: ../.env
+
+
+  nginx_front:
+    image: nginx:alpine
+    container_name: nginx_front
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on:
+      - front
+    volumes:
+      - "./nginx/default.conf.template:/etc/nginx/templates/default.conf.template"
+    ports:
+      - "8080:80"
+    expose:
+      - 80
+
+networks:
+  default:
+    external: true
+    name: localhost

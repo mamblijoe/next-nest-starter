@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  server:
+    command: npm run start:dev
+    container_name: server
+    build:
+      context: $PWD
+      dockerfile: .docker/server/Dockerfile
+    ports:
+      - '5000'
+    env_file: ../.env
+    working_dir: /app/server
+    volumes:
+      - $PWD/app/server:/app/server
+      - /app/server/node_modules
+      - /app/server/dist
+
+  client:
+    command: npm run dev
+    container_name: client
+    build:
+      context: $PWD
+      dockerfile: .docker/client/Dockerfile
+    ports:
+      - '3000'
+    env_file: ../.env
+    working_dir: /app/client
+    volumes:
+      - $PWD/app/client:/app/client
+      - /app/client/node_modules
+      - /app/client/.next
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on:
+      - client
+      - server
+    volumes:
+      - "./nginx/default.conf.template:/etc/nginx/templates/default.conf.template"
+    ports:
+      - "80:80"
+
+networks:
+  default:
+    name: localhost
