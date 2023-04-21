@@ -6,3 +6,6 @@ dev-down:
 	docker-compose -f .docker/docker-compose.dev.yml down
 dev-ps:
 	docker-compose -f .docker/docker-compose.dev.yml ps
+
+dev-restart:
+	make dev-down && make dev-up
