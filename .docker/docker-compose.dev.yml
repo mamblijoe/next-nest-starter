@@ -31,6 +31,21 @@ services:
       - $PWD/app/client/node_modules:/app/client/node_modules
       - /app/client/.next
 
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_ROOT_PASSWORD=db
+      - MYSQL_USER=db
+      - MYSQL_PASSWORD=db
+    volumes:
+      - ${PWD}/.docker/volumes/db:/var/lib/mysql
+    ports:
+      - "3306"
+
   nginx:
     image: nginx:alpine
     container_name: nginx
