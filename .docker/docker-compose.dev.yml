@@ -13,7 +13,7 @@ services:
     working_dir: /app/server
     volumes:
       - $PWD/app/server:/app/server
-      - /app/server/node_modules
+      - $PWD/app/server/node_modules:/app/server/node_modules
       - /app/server/dist
 
   client:
@@ -28,7 +28,7 @@ services:
     working_dir: /app/client
     volumes:
       - $PWD/app/client:/app/client
-      - /app/client/node_modules
+      - $PWD/app/client/node_modules:/app/client/node_modules
       - /app/client/.next
 
   nginx:
